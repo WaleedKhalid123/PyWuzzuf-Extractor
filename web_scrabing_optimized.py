@@ -1,5 +1,6 @@
-#web scraping : it is collection wanted info about some thing you want  
-# هي تجميع بيانات مرغوب فيهاعن شي ما مرغوب فيه
+#Web scraping is an automated method used to extract large amounts of data from websites
+#and convert it into structured formats like spreadsheets, JSON, or database
+
 
 from bs4 import BeautifulSoup
 import csv
@@ -17,9 +18,9 @@ responsibilities = []
 date = []
 page_number = 0
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)  # لازم يبقى ظاهر / must be visible
+    browser = p.chromium.launch(headless=False) 
     page = browser.new_page()
-    #page.wait_for_timeout(100000)  # استنى الـ challenge يخلص / wait for challenge
+    #page.wait_for_timeout(100000)  
     #src = page.content()
 
 
@@ -28,7 +29,7 @@ with sync_playwright() as p:
         print(f"Scraping search page {page_number}")
         page.goto(url)
 
-        #2nd step use requests to fetch the url 
+         
         if page_number == 0:
             print("please solve any chellenge if appears, waiting...")
             page.wait_for_timeout(100000)
@@ -40,7 +41,7 @@ with sync_playwright() as p:
                 page.wait_for_timeout(20000)
 
         src = page.content()
-        #4th step create soup object to parse content 
+         
 
         soup = BeautifulSoup(src, "lxml")
         #print(soup.title)
@@ -52,8 +53,8 @@ with sync_playwright() as p:
         #print(page_limit)
 
 
-        #5th step find the elements containing info we need : 
-        # --job titles, job skills, company names, location names
+         
+        
 
         job_titles = soup.find_all("h2", {"class": "css-s5fwzh"})
         company_names = soup.find_all("a", {"class":"css-ipsyv7"})
@@ -85,14 +86,6 @@ with sync_playwright() as p:
 
 
 
-#with sync_playwright() as p:
-    #browser = p.chromium.launch(headless=False)
-    #page = browser.new_page()
-
-
-#8th step to fetch the link of the job and fetch in page details 
-#--> salary and job requirement
-
 
     for link in links:
         page.goto(link, timeout=30000)
@@ -123,10 +116,9 @@ with sync_playwright() as p:
 
 
 
-#7th step create csv file and fill it with values
 file_list = [job_title, company_name, date, location, skills, links, salary, responsibilities]
 exported = zip_longest(*file_list)
-with open(r"C:\Users\waleed khalid\OneDrive - Egyptian E-Learning University\Desktop\web scraping\scraping.csv", "w", 
+with open(r"PATH OF YOUR FILE", "w", 
           encoding="utf-8", newline="",) as myfile:
     wr = csv.writer(myfile)
     wr.writerow(["job title","company name","date", "location","skills", "links", "salaries","job requirments"])
